@@ -23,7 +23,8 @@
         PROJECT: {
             sidebarMenu: {
                 EU: allEuropeanSubsidiaries,
-                CA: allCanadianSubsidiaries
+                CA: allCanadianSubsidiaries,
+                US: ["US"]
             },
             sidebarOrder: {
                 EU: allEuropeanSubsidiaries,
