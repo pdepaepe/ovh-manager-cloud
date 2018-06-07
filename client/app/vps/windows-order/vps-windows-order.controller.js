@@ -1,9 +1,10 @@
 class VpsOrderWindowsCtrl {
-    constructor ($q, $stateParams, $translate, $window, CloudMessage, CloudNavigation, VpsService) {
+    constructor ($q, $stateParams, $translate, $window, atInternet, CloudMessage, CloudNavigation, VpsService) {
         this.$q = $q;
         this.$translate = $translate;
         this.serviceName = $stateParams.serviceName;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.VpsService = VpsService;
@@ -67,6 +68,10 @@ class VpsOrderWindowsCtrl {
     }
 
     orderOption () {
+        this.atInternet.trackClick({
+            name:"vps-order-windows-option",
+            type: "action"
+        });
         this.VpsService.postWindowsOptionOrder(this.serviceName, this.model.duration)
             .then(({ url }) => { this.model.url = url; })
             .catch(error => this.CloudMessage.error(error || this.$translate.instant("vps_order_windows_order_error")));

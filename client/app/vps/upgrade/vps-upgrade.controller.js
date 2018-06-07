@@ -1,9 +1,10 @@
 class VpsUpgradeCtrl {
-    constructor ($filter, $stateParams, $state, $translate, $q, $window, CloudMessage, CloudNavigation, ControllerHelper, VpsService) {
+    constructor ($filter, $stateParams, $state, $translate, $q, $window, atInternet, CloudMessage, CloudNavigation, ControllerHelper, VpsService) {
         this.$filter = $filter;
         this.$translate = $translate;
         this.$q = $q;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.ControllerHelper = ControllerHelper;
@@ -95,6 +96,13 @@ class VpsUpgradeCtrl {
     }
 
     confirm () {
+        this.atInternet.trackOrder({
+            name: `[VPS]${this.selectedModelForUpgrade.name}`,
+            page: "cloud::iaas::vps::upgrade",
+            orderId: this.order.orderId,
+            priceTaxFree: this.order.prices.withoutTax.value,
+            status: 1
+        });
         this.displayBC();
     }
 

@@ -1,8 +1,9 @@
 class VpsOrderBackupStorageCtrl {
-    constructor ($stateParams, $translate, $window, CloudMessage, CloudNavigation, ServiceHelper, VpsService) {
+    constructor ($stateParams, $translate, $window, atInternet, CloudMessage, CloudNavigation, ServiceHelper, VpsService) {
         "use strict";
         this.$translate = $translate;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.serviceName = $stateParams.serviceName;
@@ -32,6 +33,10 @@ class VpsOrderBackupStorageCtrl {
     }
 
     orderOption () {
+        this.atInternet.trackClick({
+            name:"vps-order-backup-storage",
+            type: "action"
+        });
         this.ServiceHelper.loadOnNewPage(this.VpsService.orderOption(this.serviceName, "ftpbackup", this.model.optionDetails.duration.duration))
             .then(({ url }) => {
                 this.model.url = url;

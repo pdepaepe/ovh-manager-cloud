@@ -1,9 +1,10 @@
 class VpsOrderVeeamCtrl {
-    constructor ($scope, $stateParams, $translate, $window, CloudMessage, CloudNavigation, VpsService, ServiceHelper) {
+    constructor ($scope, $stateParams, $translate, $window, atInternet, CloudMessage, CloudNavigation, VpsService, ServiceHelper) {
         "use strict";
         this.$scope = $scope;
         this.$translate = $translate;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.serviceName = $stateParams.serviceName;
@@ -44,6 +45,10 @@ class VpsOrderVeeamCtrl {
 
     orderOption () {
         if (this.$scope.model.optionDetails && this.$scope.model.contractsValidated) {
+            this.atInternet.trackClick({
+                name:"vps-order-veeam",
+                type: "action"
+            });
             this.ServiceHelper.loadOnNewPage(this.VpsService.orderVeeamOption(this.serviceName, this.$scope.model.optionDetails.duration.duration))
                 .then(({ url }) => {
                     this.$scope.model.url = url;

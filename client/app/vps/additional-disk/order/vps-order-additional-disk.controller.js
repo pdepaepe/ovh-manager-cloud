@@ -1,10 +1,11 @@
 class VpsOrderDiskCtrl {
-    constructor ($filter, $stateParams, $state, $translate, $q, $window, CloudMessage, CloudNavigation, VpsService,
+    constructor ($filter, $stateParams, $state, $translate, $q, $window, atInternet, CloudMessage, CloudNavigation, VpsService,
                  ServiceHelper) {
         this.$filter = $filter;
         this.$translate = $translate;
         this.$q = $q;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.serviceName = $stateParams.serviceName;
@@ -55,6 +56,10 @@ class VpsOrderDiskCtrl {
 
     orderAdditionalDiskOption () {
         this.loaders.order = true;
+        this.atInternet.trackClick({
+            name: "vps-order-additional-disk",
+            type: "action"
+        });
         this.ServiceHelper.loadOnNewPage(this.VpsService.postAdditionalDiskOrder(this.serviceName, this.model.capacity, this.model.duration))
             .then(({ url }) => {
                 this.model.url = url;

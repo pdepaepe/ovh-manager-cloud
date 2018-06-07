@@ -1,8 +1,9 @@
 class VpsOrderSnapshotCtrl {
-    constructor ($stateParams, $translate, $window, CloudMessage, CloudNavigation, VpsService) {
+    constructor ($stateParams, $translate, $window, atInternet, CloudMessage, CloudNavigation, VpsService) {
         this.$translate = $translate;
         this.serviceName = $stateParams.serviceName;
         this.$window = $window;
+        this.atInternet = atInternet;
         this.CloudMessage = CloudMessage;
         this.CloudNavigation = CloudNavigation;
         this.VpsService = VpsService;
@@ -45,6 +46,10 @@ class VpsOrderSnapshotCtrl {
 
     orderOption () {
         if (this.model.optionDetails && this.model.contractsValidated) {
+            this.atInternet.trackClick({
+                name: "vps-order-snapshot",
+                type:"action"
+            });
             this.VpsService.orderOption(this.serviceName, "snapshot", this.model.optionDetails.duration.duration)
                 .then(({ url }) => {
                     this.model.url = url;

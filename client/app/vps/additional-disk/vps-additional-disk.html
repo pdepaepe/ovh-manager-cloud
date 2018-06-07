@@ -11,9 +11,11 @@
     <div data-ng-if="$ctrl.hasAdditionalDiskOption && !$ctrl.loaders.disk">
         <p data-ng-if="$ctrl.canOrder()" data-translate="vps_tab_additional_disk_count"></p>
         <button class="oui-button oui-button_primary"
-                data-translate="vps_additional_disk_add_button"
                 data-ng-if="$ctrl.canOrder()"
-                data-ui-sref="iaas.vps.detail.additional-disk.order"></button>
+                data-ui-sref="iaas.vps.detail.additional-disk.order"
+                data-track-on="click"
+                data-track-name="vps-activate-additional-disk"
+                data-track-click="action">{{::'vps_additional_disk_add_button' | translate}}</button>
 
         <oui-datagrid data-ng-if="!$ctrl.canOrder()"
                       data-rows="$ctrl.additionnalDisks">
