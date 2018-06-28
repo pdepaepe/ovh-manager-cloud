@@ -55,8 +55,8 @@ angular.module("managerApp")
         scope: true,
         transclude: true,
         template: `
-            <dd class="text-truncate d-flex">
-                <div class="cui-tile-item-status__detail text-truncate">
+            <dd class="text-nowrap d-flex">
+                <div class="cui-tile-item-status__detail text-nowrap">
                     <span class="oui-status" ng-class="'oui-status_'+$ctrl.type">
                         <span data-ng-if="$ctrl.description !== null && $ctrl.description !== ''" data-ng-bind="$ctrl.description"></span>
                         <span data-ng-if="$ctrl.description === null || $ctrl.description === ''" data-ng-bind="'-'"></span>
