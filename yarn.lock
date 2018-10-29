@@ -7329,10 +7329,9 @@ ovh-manager-webfont@ovh-ux/ovh-manager-webfont#^1.0.1:
   version "1.0.2"
   resolved "https://codeload.github.com/ovh-ux/ovh-manager-webfont/tar.gz/1d759c46c8c3ead4bc5e887a2336abd124a17c58"
 
-ovh-ui-angular@~2.21.0:
+ovh-ui-angular@ovh-ux/ovh-ui-angular#build/oui-select-required:
   version "2.21.4"
-  resolved "https://registry.yarnpkg.com/ovh-ui-angular/-/ovh-ui-angular-2.21.4.tgz#c93c4fbb2fc480bd9e44e1cf0a591a0d47c1ced4"
-  integrity sha512-nX2LDMAwRFxLS+nIXxOC4mpdfiM88cfVp2ntJ7vLjarEMlYF7ZOdgPnXFnVgNljd/DfMxNMNMWVsKq7ByXvIIA==
+  resolved "https://codeload.github.com/ovh-ux/ovh-ui-angular/tar.gz/3ea7759c9bb3fe03dbfc84b16f2a4689493c16fb"
   dependencies:
     angular ">=1.6.x"
     angular-aria ">=1.6.x"
