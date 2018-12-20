@@ -377,20 +377,35 @@ angular.module('managerApp')
           }
         });
         // Remove flavors if OS has restricted
-        const restrictedFlavors = _.get(self.vmInEdition, 'image.flavorType') || [];
-        if (restrictedFlavors.length > 0) {
+        const restrictedFlavors = _.get(self.vmInEdition, 'image.flavorType', []);
+        const selectedFlavour = _.get(self.vmInEdition, 'flavor');
+        let selectedFlavourInFilterList = false;
+        if (!_.isEmpty(restrictedFlavors)) {
           self.displayData.categories = _.filter(
             self.displayData.categories,
             (category) => {
-              // eslint-disable-next-line no-param-reassign
-              category.flavors = _.filter(
+              const currentCategory = category;
+              currentCategory.flavors = _.filter(
                 category.flavors,
-                flavor => _.indexOf(restrictedFlavors, flavor.shortType) > -1,
+                (flavor) => {
+                  const isRestricted = _.indexOf(restrictedFlavors, flavor.shortType) > -1;
+                  if (!selectedFlavourInFilterList
+                    && isRestricted
+                    && selectedFlavour.id === flavor.id) {
+                    selectedFlavourInFilterList = true;
+                  }
+                  return isRestricted;
+                },
               );
-              return category.flavors.length > 0;
+              return currentCategory.flavors.length > 0;
             },
           );
-          _.set(self.vmInEdition, 'flavor', self.displayData.categories[0].flavors[0]);
+          // check if previously selected instance is available in filtered list
+          // set flavour/instance to empty if
+          // previously selefcted flavour is not available in filtered list
+          if (!selectedFlavourInFilterList) {
+            _.set(self.vmInEdition, 'flavor', null);
+          }
         }
         self.displayData.categories = _.sortBy(self.displayData.categories, 'order');
       }
