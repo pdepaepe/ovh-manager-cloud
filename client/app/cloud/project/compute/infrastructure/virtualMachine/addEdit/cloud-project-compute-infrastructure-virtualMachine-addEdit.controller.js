@@ -376,6 +376,22 @@ angular.module('managerApp')
             self.states.hasOldFlavors = true;
           }
         });
+        // Remove flavors if OS has restricted
+        const restrictedFlavors = _.get(self.vmInEdition, 'image.flavorType') || [];
+        if (restrictedFlavors.length > 0) {
+          self.displayData.categories = _.filter(
+            self.displayData.categories,
+            (category) => {
+              // eslint-disable-next-line no-param-reassign
+              category.flavors = _.filter(
+                category.flavors,
+                flavor => _.indexOf(restrictedFlavors, flavor.shortType) > -1,
+              );
+              return category.flavors.length > 0;
+            },
+          );
+          _.set(self.vmInEdition, 'flavor', self.displayData.categories[0].flavors[0]);
+        }
         self.displayData.categories = _.sortBy(self.displayData.categories, 'order');
       }
 
