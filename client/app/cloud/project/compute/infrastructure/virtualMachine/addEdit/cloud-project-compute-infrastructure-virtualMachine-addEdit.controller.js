@@ -390,7 +390,11 @@ angular.module('managerApp')
               return category.flavors.length > 0;
             },
           );
-          _.set(self.vmInEdition, 'flavor', self.displayData.categories[0].flavors[0]);
+          if (!_.isEmpty(self.displayData.categories)) {
+            _.set(self.vmInEdition, 'flavor', self.displayData.categories[0].flavors[0]);
+          } else {
+            _.set(self.vmInEdition, 'flavor', null);
+          }
         }
         self.displayData.categories = _.sortBy(self.displayData.categories, 'order');
       }
