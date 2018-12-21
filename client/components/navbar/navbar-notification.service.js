@@ -10,6 +10,7 @@ class NavbarNotificationService {
     this.atInternet = atInternet;
     this.CloudMessage = CloudMessage;
     this.OvhApiNotificationAapi = OvhApiNotificationAapi;
+
     this.TARGET = TARGET;
     this.UNIVERSE = UNIVERSE;
 
@@ -92,12 +93,23 @@ class NavbarNotificationService {
     }, this.NOTIFICATION_REFRESH_TIME);
   }
 
-  getNavbarContent() {
+  getNavbarContent({ ovhSubsidiary: subsidiary }) {
+    const useNewText = ['FR'].includes(subsidiary);
+
+    const title = useNewText
+      ? NavbarNotificationService.buildMenuHeader(this.$translate.instant('common_navbar_notification_title_new'))
+      : this.$translate.instant('common_navbar_notification_title');
+
+    const headerTitle = useNewText
+      ? this.$translate.instant('common_navbar_notification_title_new')
+      : title;
+
     return this.getSubLinks().then((sublinks) => {
       this.setRefreshTime(sublinks);
       const navbarContent = {
         name: 'notifications',
-        title: this.$translate.instant('common_navbar_notification_title'),
+        title,
+        headerTitle,
         iconClass: 'icon-notifications',
         iconAnimated: this.constructor.shouldAnimateIcon(sublinks),
         limitTo: 10,
@@ -118,6 +130,18 @@ class NavbarNotificationService {
 
   static shouldAnimateIcon(sublinks) {
     return _.some(sublinks, sublink => _.includes(['incident', 'error', 'warning'], sublink.level) && sublink.isActive);
+  }
+
+  static buildMenuHeader(text) {
+    return `
+    <span class="navbar__header-content">
+      <span class="d-flex">
+        ${text}
+        <span
+            class="oui-icon navbar__arrow"
+            aria-hidden="true"></span>
+      </span>
+    </span>`;
   }
 }
 

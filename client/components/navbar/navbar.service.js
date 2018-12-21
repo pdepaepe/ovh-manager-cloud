@@ -381,9 +381,20 @@ class ManagerNavbarService {
       });
     }
 
+    const useNewText = ['FR'].includes(locale);
+
+    const title = useNewText
+      ? this.navbarNotificationService.constructor.buildMenuHeader(this.$translate.instant('common_menu_support_assistance_new'))
+      : this.$translate.instant('common_menu_support_assistance');
+
+    const headerTitle = useNewText
+      ? this.$translate.instant('common_menu_support_assistance_new')
+      : title;
+
     return {
       name: 'assistance',
-      title: this.$translate.instant('common_menu_support_assistance'),
+      title,
+      headerTitle,
       iconClass: 'icon-assistance',
       onClick: () => this.atInternet.trackClick({
         name: 'assistance',
@@ -429,9 +440,19 @@ class ManagerNavbarService {
   }
 
   getUserMenu(currentUser) {
+    const useNewText = ['FR'].includes(currentUser.ovhSubsidiary);
+
+    const title = useNewText
+      ? this.navbarNotificationService.constructor.buildMenuHeader(`
+        ${this.$translate.instant('common_menu_support_userAccount_1', { username: currentUser.firstname })}
+        <br>
+        ${this.$translate.instant('common_menu_support_userAccount_2')}
+      `)
+      : currentUser.firstname;
+
     return {
       name: 'user',
-      title: currentUser.firstname,
+      title,
       iconClass: 'icon-user',
       nichandle: currentUser.nichandle,
       fullName: `${currentUser.firstname} ${currentUser.name}`,
@@ -672,12 +693,10 @@ class ManagerNavbarService {
         .then(x => x.default),
     );
 
-    return this.$q.all({
-      translate: this.loadTranslations(),
-      user: this.sessionService.getUser(),
-      notifications: this.navbarNotificationService.getNavbarContent(),
-    })
-      .then(({ user, notifications }) => getBaseNavbar(user, notifications))
+    return this.loadTranslations()
+      .then(() => this.sessionService.getUser())
+      .then(user => this.navbarNotificationService.getNavbarContent(user)
+        .then(notifications => getBaseNavbar(user, notifications)))
       .catch(() => getBaseNavbar());
   }
 }
