@@ -1467,6 +1467,21 @@ angular.module('managerApp')
         return _.find(CLOUD_INSTANCE_HAS_GUARANTEED_RESSOURCES, elem => elem === flavorType);
       };
 
+      /**
+       * We dont support OS and flavour change at same time.
+       * NVIDIA OS supported only in t1 and t2 inatances.
+       * If previous flavour is not t1 or t2, dont allow to select NVIDIA.
+       * This is also applicable for other images with restricted flavours.
+       */
+      self.isImageSelectableInEditMode = function isImageSelectableInEditMode(image) {
+        const flavorTypes = _.get(image, 'flavorType', []);
+        if (self.vmInEdition.status === 'DRAFT' || _.isEmpty(flavorTypes)) {
+          return true;
+        }
+        const flavorType = _.get(self.vmInEdition, 'flavor.shortType', null);
+        return _.indexOf(flavorTypes, flavorType) !== -1;
+      };
+
       self.getRealFlavor = function getRealFlavor(flavor, category) {
         const osType = self.vmInEdition.image ? self.vmInEdition.image.type : 'linux';
         const flex = category === 'accelerated' ? false : self.model.flex;
